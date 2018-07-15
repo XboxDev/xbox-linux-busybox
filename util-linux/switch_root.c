@@ -235,12 +235,10 @@ int switch_root_main(int argc UNUSED_PARAM, char **argv)
 	rootdev = st.st_dev;
 	xstat(".", &st);
 	if (st.st_dev == rootdev) {
-		// Show usage, it says new root must be a mountpoint
-		bb_show_usage();
+		bb_error_msg_and_die("NEW_ROOT must be a mountpoint");
 	}
 	if (!dry_run && getpid() != 1) {
-		// Show usage, it says we must be PID 1
-		bb_show_usage();
+		bb_error_msg_and_die("PID %u is not 1", getpid());
 	}
 
 	// Additional sanity checks: we're about to rm -rf /, so be REALLY SURE
